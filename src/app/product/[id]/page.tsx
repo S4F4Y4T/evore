@@ -1,10 +1,15 @@
+'use client';
+
 import { products } from '@/data/products';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Minus, Plus } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
+import { use } from 'react';
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
+    const { addToCart } = useCart();
     const product = products.find((p) => p.id === id);
 
     if (!product) {
@@ -17,6 +22,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </div>
         );
     }
+
+    const handleAddToCart = () => {
+        addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image || '/images/evore_no1.png'
+        });
+    };
 
     return (
         <main className="min-h-screen bg-obsidian text-ivory pt-24 pb-20">
@@ -67,7 +81,10 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                     </div>
 
                     <div className="pt-8 flex gap-6">
-                        <button className="flex-1 bg-ivory text-obsidian uppercase tracking-widest text-xs font-bold py-4 hover:bg-champagne transition-colors">
+                        <button
+                            onClick={handleAddToCart}
+                            className="flex-1 bg-ivory text-obsidian uppercase tracking-widest text-xs font-bold py-4 hover:bg-champagne transition-colors active:scale-95 duration-150"
+                        >
                             Add to Bag
                         </button>
                         <button className="border border-white/20 px-6 hover:border-ivory transition-colors">

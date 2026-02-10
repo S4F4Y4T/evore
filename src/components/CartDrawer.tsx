@@ -77,9 +77,13 @@ export default function CartDrawer() {
                             <span>Subtotal</span>
                             <span>Calculated at checkout</span>
                         </div>
-                        <button className="w-full bg-ivory text-obsidian py-4 uppercase tracking-widest text-xs font-bold hover:bg-champagne transition-colors">
+                        <Link
+                            href="/checkout"
+                            onClick={toggleCart}
+                            className="block w-full bg-ivory text-obsidian py-4 uppercase tracking-widest text-xs font-bold hover:bg-champagne transition-colors text-center"
+                        >
                             Checkout
-                        </button>
+                        </Link>
                     </div>
                 )}
 
