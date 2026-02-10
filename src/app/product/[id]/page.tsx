@@ -3,13 +3,15 @@
 import { products } from '@/data/products';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Minus, Plus } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
 import { use } from 'react';
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     const { addToCart } = useCart();
+    const { toggleWishlist, isInWishlist } = useWishlist();
     const product = products.find((p) => p.id === id);
 
     if (!product) {
@@ -31,6 +33,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             image: product.image || '/images/evore_no1.png'
         });
     };
+
+    const isInList = isInWishlist(product.id);
 
     return (
         <main className="min-h-screen bg-obsidian text-ivory pt-24 pb-20">
@@ -87,7 +91,10 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                         >
                             Add to Bag
                         </button>
-                        <button className="border border-white/20 px-6 hover:border-ivory transition-colors">
+                        <button
+                            onClick={() => toggleWishlist(product.id)}
+                            className={`border px-6 transition-colors duration-300 ${isInList ? 'bg-champagne border-champagne text-obsidian' : 'border-white/20 hover:border-ivory text-ivory'}`}
+                        >
                             <span className="sr-only">Like</span>
                             ♥
                         </button>

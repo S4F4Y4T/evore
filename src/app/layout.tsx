@@ -1,7 +1,11 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
+import GlobalAnimation from "@/components/GlobalAnimation";
+import SearchOverlay from "@/components/SearchOverlay";
 import { CartProvider } from "@/context/CartContext";
+import { SearchProvider } from "@/context/SearchContext";
+import { WishlistProvider } from "@/context/WishlistContext";
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
@@ -31,12 +35,19 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${inter.variable} antialiased selection:bg-champagne selection:text-black`}
       >
-        <CartProvider>
-          <Header />
-          {children}
-          <Footer />
-          <CartDrawer />
-        </CartProvider>
+        <SearchProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <Header />
+              <GlobalAnimation>
+                {children}
+              </GlobalAnimation>
+              <Footer />
+              <CartDrawer />
+              <SearchOverlay />
+            </CartProvider>
+          </WishlistProvider>
+        </SearchProvider>
       </body>
     </html>
   );
